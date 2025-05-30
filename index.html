@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CryptoNews – Home</title>
+
+  <!-- 1) Bootstrap Lux -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/lux/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <!-- 2) CSS customizado -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- 3) jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    /* painel de cripto discreto */
+    .crypto-row .col { flex:0 0 auto; max-width:160px; }
+    .crypto-row .card { border-color:#ddd; padding:.5rem; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,0.1);}
+    .crypto-row .card img {height:32px!important;object-fit:contain;margin:.5rem auto;}
+    .crypto-row .card h6 {font-size:.9rem;margin-bottom:.25rem;}
+    .crypto-row .card p {font-size:.85rem;margin-bottom:.25rem;}
+    .crypto-row .card small{display:block;font-size:.75rem;color:#666;}
+  </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">CRYPTONEWS</a>
+      <div class="ms-auto">
+        <a href="add.html" class="btn btn-outline-light me-2">ADICIONAR NOTÍCIA</a>
+        <a href="contato.html" class="btn btn-outline-light">CONTATO</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO + RELÓGIO -->
+  <header class="bg-light py-5 text-center shadow-sm position-relative">
+    <div class="container">
+      <h1 class="fw-bold">BEM-VINDO AO NOSSO PORTAL!</h1>
+      <p class="text-muted">Notícias sobre tecnologia e criptomoedas</p>
+      <div id="clock" class="position-absolute top-0 end-0 m-3 text-secondary fw-bold"></div>
+    </div>
+  </header>
+
+  <!-- Mini-gráfico TradingView -->
+  <div class="container my-4">
+    <div class="tradingview-widget-container">
+      <div id="tradingview_mini"></div>
+      <script
+        src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js"
+        async>
+      {
+        "symbol": "BINANCE:BTCBRL",
+        "width": "100%",
+        "height": "200",
+        "locale": "br",
+        "dateRange": "1M",
+        "colorTheme": "light",
+        "trendLineColor": "#37a6ef",
+        "underLineColor": "#e3f2fd",
+        "isTransparent": false,
+        "autosize": true,
+        "largeChartUrl": ""
+      }
+      </script>
+    </div>
+  </div>
+
+  <!-- CONVERSOR e PROJEÇÃO lado a lado -->
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row gap-3">
+      <!-- Conversor -->
+      <div class="card shadow-sm p-3 flex-fill">
+        <h5 class="card-title">💱 Conversor de Moeda</h5>
+        <div class="input-group mb-2">
+          <input type="number" id="amount" class="form-control" placeholder="Valor em BRL">
+          <select id="target" class="form-select">
+            <option value="BTC">BTC</option>
+            <option value="USD">USD</option>
+          </select>
+          <button type="button" id="convertBtn" class="btn btn-primary">Converter</button>
+        </div>
+        <div id="convertResult" class="fw-bold text-center"></div>
+      </div>
+      <!-- Projeção -->
+      <div class="card shadow-sm p-3 flex-fill">
+        <h5 class="card-title">📈 Projeção de Investimento</h5>
+        <div class="row g-2 mb-2">
+          <div class="col"><input type="number" id="initial" class="form-control" placeholder="Aporte Inicial"></div>
+          <div class="col"><input type="number" id="monthly" class="form-control" placeholder="Aporte Mensal"></div>
+        </div>
+        <div class="row g-2 mb-2">
+          <div class="col"><input type="number" id="rate" class="form-control" placeholder="% anual"></div>
+          <div class="col"><input type="number" id="years" class="form-control" placeholder="Anos"></div>
+        </div>
+        <button type="button" id="projBtn" class="btn btn-primary w-100">Calcular</button>
+        <div id="projResult" class="mt-2 fw-bold text-center"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="container my-5 flex-fill">
+
+    <!-- 1) Cotação de Cripto -->
+    <h4 class="text-primary mb-2 text-center small">📈 COTAÇÕES ATUAIS</h4>
+    <div id="cryptoPrices" class="row justify-content-center g-3 mb-4 crypto-row"></div>
+    <hr>
+
+    <!-- 2) Notícias Externas (Cripto) -->
+    <h4 class="text-primary d-flex justify-content-between align-items-center mt-5 mb-3">
+      <span>📰 NOTÍCIAS EXTERNAS</span>
+      <button id="refreshExternal" class="btn btn-sm btn-outline-secondary">🔄 Atualizar</button>
+    </h4>
+    <div id="externalNews" class="row row-cols-1 row-cols-md-2 g-4 mb-5"></div>
+    <hr>
+
+    <!-- 2.1) Notícias do Mundo -->
+    <h4 class="text-primary d-flex justify-content-between align-items-center mt-5 mb-3">
+      <span>🌍 NOTÍCIAS DO MUNDO</span>
+      <button id="refreshWorld" class="btn btn-sm btn-outline-secondary">🔄 Atualizar</button>
+    </h4>
+    <div id="worldNews" class="row row-cols-1 row-cols-md-2 g-4 mb-5"></div>
+    <hr>
+
+    <!-- 3) Suas Notícias -->
+    <h4 class="text-primary mt-5 mb-3">🖊️ SUAS NOTÍCIAS</h4>
+    <div class="row">
+      <div class="col-lg-8">
+        <div id="newsGrid" class="row row-cols-1 row-cols-md-2 g-4"></div>
+      </div>
+      <aside class="col-lg-4">
+        <div class="card shadow-sm mb-4 p-3">
+          <h5 class="card-title">🔍 Pesquisar</h5>
+          <div class="input-group mb-3">
+            <input type="text" id="searchInput" class="form-control" placeholder="Digite um termo">
+            <button class="btn btn-dark" id="searchButton">Pesquisar</button>
+          </div>
+          <h5 class="card-title">📂 Categorias</h5>
+          <ul id="categoryList" class="list-unstyled"></ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-dark text-white text-center py-3 mt-auto">
+    &copy; CryptoNews 2025
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- app.js -->
+  <script src="js/app.js"></script>
+</body>
+</html>

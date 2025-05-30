@@ -1,0 +1,35 @@
+/* ==============================
+   Painel de Criptomoedas Discreto
+   ============================== */
+.crypto-row .col {
+  flex: 0 0 auto;
+  max-width: 160px;
+}
+.crypto-row .card {
+  border-color: #ddd;
+  padding: 0.5rem;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.crypto-row .card img {
+  height: 32px !important;
+  object-fit: contain;
+  margin: 0.5rem auto;
+}
+.crypto-row .card h6 {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+.crypto-row .card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+.crypto-row .card small {
+  display: block;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+/* Ajustes gerais */
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }

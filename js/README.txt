@@ -89,4 +89,3 @@ CriptoNews-Portal/
 ---
 
 ## 📝 Licença
-Este projeto está licenciado sob a MIT License. Consulte LICENSE para mais detalhes.
